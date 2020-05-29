@@ -1,5 +1,6 @@
 package com.projects.blog.domain.post;
 
+import com.projects.blog.common.BaseTimeEntity;
 import com.projects.blog.domain.comment.Comment;
 import com.projects.blog.domain.file.File;
 import com.projects.blog.domain.user.User;
@@ -12,11 +13,14 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
+import lombok.Builder;
 import lombok.Getter;
+import lombok.RequiredArgsConstructor;
 
+@RequiredArgsConstructor
 @Getter
 @Entity
-public class Post {
+public class Post extends BaseTimeEntity {
 
   @Id
   @Column(name = "POST_ID")
@@ -38,4 +42,10 @@ public class Post {
 
   @OneToMany(mappedBy = "post")
   private List<File> files;
+
+  @Builder
+  public Post(String title, String content) {
+    this.title = title;
+    this.content = content;
+  }
 }
