@@ -18,10 +18,10 @@ public class User {
 
   private String password;
 
-  private String profilePicture;
+  private String profilePictureUrl;
 
   @ManyToOne
-  @JoinColumn(name="ROLE_ID")
+  @JoinColumn(name = "ROLE_ID")
   private Role role;
 
 }

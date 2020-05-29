@@ -1,5 +1,7 @@
 package com.projects.blog.domain.authority;
 
-public interface AuthorityRepository {
+import org.springframework.data.jpa.repository.JpaRepository;
+
+public interface AuthorityRepository extends JpaRepository<Authority, Long> {
 
 }
