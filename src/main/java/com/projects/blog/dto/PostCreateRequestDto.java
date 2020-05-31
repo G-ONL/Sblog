@@ -4,7 +4,7 @@ import com.projects.blog.domain.post.Post;
 import lombok.Getter;
 
 @Getter
-public class PostRequestDto {
+public class PostCreateRequestDto {
 
   private String title;
   private String content;
