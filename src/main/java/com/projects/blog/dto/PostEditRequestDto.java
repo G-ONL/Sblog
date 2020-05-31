@@ -1,9 +1,9 @@
 package com.projects.blog.dto;
 
-import com.projects.blog.domain.file.File;
-import java.util.List;
 import lombok.Getter;
+import lombok.RequiredArgsConstructor;
 
+@RequiredArgsConstructor
 @Getter
 public class PostEditRequestDto {
 

@@ -1,8 +1,10 @@
 package com.projects.blog.dto;
 
 import com.projects.blog.domain.post.Post;
+import lombok.AllArgsConstructor;
 import lombok.Getter;
 
+@AllArgsConstructor
 @Getter
 public class PostCreateRequestDto {
 
@@ -15,4 +17,5 @@ public class PostCreateRequestDto {
         .content(content)
         .build();
   }
+
 }
