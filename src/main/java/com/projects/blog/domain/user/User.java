@@ -1,6 +1,8 @@
 package com.projects.blog.domain.user;
 
+import com.projects.blog.domain.post.Post;
 import com.projects.blog.domain.role.Role;
+import java.util.List;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -8,6 +10,8 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 
@@ -17,7 +21,7 @@ import lombok.RequiredArgsConstructor;
 public class User {
 
   @Id
-  @Column(name = "POST_ID")
+  @Column(name = "USER_ID")
   @GeneratedValue(strategy = GenerationType.IDENTITY)
   private Long id;
 
@@ -30,5 +34,14 @@ public class User {
   @ManyToOne
   @JoinColumn(name = "ROLE_ID")
   private Role role;
+
+  @OneToMany(mappedBy = "user")
+  private List<Post> posts;
+
+  @Builder
+  public User(String userName, String password) {
+    this.userName = userName;
+    this.password = password;
+  }
 
 }
