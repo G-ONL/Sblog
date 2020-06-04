@@ -1,9 +1,12 @@
 package com.projects.blog.controller;
 
-import com.projects.blog.domain.user.UserRepository;
-import com.projects.blog.dto.UserRequestDto;
+import com.projects.blog.dto.ResponseMessageDto;
+import com.projects.blog.dto.UserJoinRequestDto;
 import com.projects.blog.service.UserService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -13,8 +16,10 @@ public class UserController {
 
   private final UserService userService;
 
-  public Long join(@RequestBody UserRequestDto userRequestDto){
-    return userService.join(userRequestDto);
+  @PostMapping("/user/join")
+  public ResponseEntity<ResponseMessageDto> join(@RequestBody UserJoinRequestDto requestDto) {
+    userService.join(requestDto);
+    return ResponseEntity.ok(new ResponseMessageDto(HttpStatus.OK.value()));
   }
 
 }

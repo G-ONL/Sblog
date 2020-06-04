@@ -26,10 +26,10 @@ public class PostService {
   }
 
   @Transactional
-  public PostResponseDto edit(Long id, PostEditRequestDto postEditRequestDto) {
+  public Long edit(Long id, PostEditRequestDto postEditRequestDto) {
     Post post = postRepository.findById(id).get();
     post.update(postEditRequestDto);
-    return null;
+    return post.getId();
   }
 
   @Transactional

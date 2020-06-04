@@ -30,7 +30,7 @@ public class PostController {
   }
 
   @PutMapping("/post/{id}")
-  public PostResponseDto edit(@PathVariable Long id, @RequestBody PostEditRequestDto postEditRequestDto){
+  public Long edit(@PathVariable Long id, @RequestBody PostEditRequestDto postEditRequestDto){
     return postService.edit(id, postEditRequestDto);
   }
 
@@ -38,5 +38,6 @@ public class PostController {
   public Long delete(@PathVariable Long id){
     return postService.delete(id);
   }
+
 
 }
