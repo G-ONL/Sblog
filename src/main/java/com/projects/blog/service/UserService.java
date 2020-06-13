@@ -3,6 +3,9 @@ package com.projects.blog.service;
 import com.projects.blog.domain.user.User;
 import com.projects.blog.domain.user.UserRepository;
 import com.projects.blog.dto.UserJoinRequestDto;
+import com.projects.blog.dto.UserLoginRequestDto;
+import com.projects.blog.dto.UserLoginResponseDto;
+import com.projects.blog.exception.UserException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
@@ -27,4 +30,17 @@ public class UserService {
     }
     return userRepository.save(user).getId();
   }
+
+  @Transactional
+  public UserLoginResponseDto login(UserLoginRequestDto requestDto) {
+    User user = userRepository.findByUserName(requestDto.getUserName());
+    if (user == null) {
+      throw new UserException("아이디를 확인해주세요");
+    }
+    if (!passwordEncoding.matches(requestDto.getPassword(), user.getPassword())) {
+      throw new UserException("비밀번호를 확인해주세요");
+    }
+    return new UserLoginResponseDto(user.getId());
+  }
+
 }
