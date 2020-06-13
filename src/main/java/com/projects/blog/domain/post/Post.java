@@ -54,4 +54,11 @@ public class Post extends BaseTimeEntity {
     this.title = postEditRequestDto.getTitle();
     this.content = postEditRequestDto.getContent();
   }
+
+  public void addToUser(User user) {
+    this.user = user;
+    if (!user.getPosts().contains(this)) {
+      user.getPosts().add(this);
+    }
+  }
 }

@@ -2,9 +2,13 @@ package com.projects.blog.service;
 
 import com.projects.blog.domain.post.Post;
 import com.projects.blog.domain.post.PostRepository;
-import com.projects.blog.dto.PostCreateRequestDto;
+import com.projects.blog.domain.user.User;
+import com.projects.blog.domain.user.UserRepository;
 import com.projects.blog.dto.PostEditRequestDto;
 import com.projects.blog.dto.PostResponseDto;
+import com.projects.blog.dto.PostSaveRequestDto;
+import com.projects.blog.exception.PostException;
+import com.projects.blog.exception.UserException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -14,15 +18,29 @@ import org.springframework.transaction.annotation.Transactional;
 public class PostService {
 
   private final PostRepository postRepository;
+  private final UserRepository userRepository;
 
   @Transactional
-  public Long create(PostCreateRequestDto postCreateRequestDto) {
-    return postRepository.save(postCreateRequestDto.toEntity()).getId();
+  public Long save(PostSaveRequestDto postSaveRequestDto, Long userId) {
+    User user = userRepository.findById(userId).orElseThrow(
+        () -> new UserException("존재하지 않는 유저 입니다.")
+    );
+    Post post = postSaveRequestDto.toEntity();
+    post.addToUser(user);
+    postRepository.save(post);
+    return post.getId();
   }
 
   @Transactional(readOnly = true)
-  public PostResponseDto find(Long id) {
-    return new PostResponseDto(postRepository.findById(id).get());
+  public PostResponseDto find(Long id, Long userId) {
+    Post post = postRepository.findById(id).orElseThrow(()
+        -> new PostException("해당 포스트가 없습니다."));
+    User user = userRepository.findById(userId).orElseThrow(()
+        -> new IllegalArgumentException("유저가 없습니다.")
+    );
+
+    PostResponseDto postResponseDto = new PostResponseDto(post);
+    return postResponseDto;
   }
 
   @Transactional

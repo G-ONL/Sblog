@@ -8,7 +8,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.projects.blog.domain.post.PostRepository;
-import com.projects.blog.dto.PostCreateRequestDto;
+import com.projects.blog.dto.PostSaveRequestDto;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -32,17 +32,17 @@ public class PostControllerTest {
 
   @BeforeEach()
   void 테스트_전에_Post_생성() throws Exception {
-    PostCreateRequestDto postCreateRequestDto = new PostCreateRequestDto("게시글 1", "게시글 입니다.");
-    postRepository.save(postCreateRequestDto.toEntity());
+    PostSaveRequestDto postSaveRequestDto = new PostSaveRequestDto("게시글 1", "게시글 입니다.");
+    postRepository.save(postSaveRequestDto.toEntity());
   }
 
   @Test
   void createPost() throws Exception {
-    PostCreateRequestDto postCreateRequestDto = new PostCreateRequestDto("게시글 2", "게시글2 입니다.");
+    PostSaveRequestDto postSaveRequestDto = new PostSaveRequestDto("게시글 2", "게시글2 입니다.");
 
     this.mockMvc.perform(post("/post")
         .contentType(MediaType.APPLICATION_JSON)
-        .content(objectMapper.writeValueAsString(postCreateRequestDto)))
+        .content(objectMapper.writeValueAsString(postSaveRequestDto)))
         .andDo(print())
         .andExpect(status().isOk());
 
