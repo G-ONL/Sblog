@@ -1,10 +1,17 @@
 package com.projects.blog.common;
 
+import com.google.common.collect.Lists;
+import java.util.List;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.http.ResponseEntity;
 import springfox.documentation.builders.PathSelectors;
 import springfox.documentation.builders.RequestHandlerSelectors;
+import springfox.documentation.service.ApiKey;
+import springfox.documentation.service.AuthorizationScope;
+import springfox.documentation.service.SecurityReference;
 import springfox.documentation.spi.DocumentationType;
+import springfox.documentation.spi.service.contexts.SecurityContext;
 import springfox.documentation.spring.web.plugins.Docket;
 import springfox.documentation.swagger2.annotations.EnableSwagger2;
 
@@ -14,16 +21,38 @@ public class SwaggerConfig {
 
   @Bean
   public Docket api() {
-    Docket docket = new Docket(DocumentationType.SWAGGER_2) //SWAGGER2의 도켓을 만드는 것
-        .pathMapping("/") //맵핑 주소
-        .useDefaultResponseMessages(false); //Default 응답 값 설정 여부
+    Docket docket = new Docket(DocumentationType.SWAGGER_2)
+        .pathMapping("/")
+        .forCodeGeneration(true)
+        .genericModelSubstitutes(ResponseEntity.class)
+        .securityContexts(Lists.newArrayList(securityContext()))
+        .securitySchemes(Lists.newArrayList(apiKey()))
+        .useDefaultResponseMessages(false);
 
     docket = docket
         .select()
-        .apis(RequestHandlerSelectors.any())//적용될 패키지 정보 (any=> 모든 컨트롤러 패키지에 적용)
-        .paths(PathSelectors.ant("/**")) //어떤 패스 정보에 적용 => /**  모든 정보
+        .apis(RequestHandlerSelectors.any())
+        .paths(PathSelectors.ant("/**"))
         .build();
-
     return docket;
   }
+
+  private SecurityContext securityContext() {
+    return SecurityContext.builder()
+        .securityReferences(defaultAuth())
+        .forPaths(PathSelectors.any())
+        .build();
+  }
+
+  private List<SecurityReference> defaultAuth() {
+    AuthorizationScope authorizationScope = new AuthorizationScope("global", "accessEveryThing");
+    AuthorizationScope[] authorizationScopes = new AuthorizationScope[1];
+    authorizationScopes[0] = authorizationScope;
+    return Lists.newArrayList(new SecurityReference("JWT", authorizationScopes));
+  }
+
+  private ApiKey apiKey() {
+    return new ApiKey("JWT", CommonConstant.AUTHORIZATION, "header");
+  }
+
 }
