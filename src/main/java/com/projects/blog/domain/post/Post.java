@@ -4,6 +4,7 @@ import com.projects.blog.common.BaseTimeEntity;
 import com.projects.blog.domain.comment.Comment;
 import com.projects.blog.domain.file.File;
 import com.projects.blog.domain.user.User;
+import com.projects.blog.dto.PostEditRequestDto;
 import java.util.List;
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -47,5 +48,17 @@ public class Post extends BaseTimeEntity {
   public Post(String title, String content) {
     this.title = title;
     this.content = content;
+  }
+
+  public void update(PostEditRequestDto postEditRequestDto) {
+    this.title = postEditRequestDto.getTitle();
+    this.content = postEditRequestDto.getContent();
+  }
+
+  public void addToUser(User user) {
+    this.user = user;
+    if (!user.getPosts().contains(this)) {
+      user.getPosts().add(this);
+    }
   }
 }

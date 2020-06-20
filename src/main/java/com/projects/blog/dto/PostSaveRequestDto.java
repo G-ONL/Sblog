@@ -1,10 +1,12 @@
 package com.projects.blog.dto;
 
 import com.projects.blog.domain.post.Post;
+import lombok.AllArgsConstructor;
 import lombok.Getter;
 
+@AllArgsConstructor
 @Getter
-public class PostRequestDto {
+public class PostSaveRequestDto {
 
   private String title;
   private String content;
@@ -15,4 +17,5 @@ public class PostRequestDto {
         .content(content)
         .build();
   }
+
 }

@@ -30,6 +30,6 @@ public class Authority {
   @JoinColumn(name = "ROLE_ID")
   private Role role;
 
-  @OneToMany(mappedBy = "Authority")
+  @OneToMany(mappedBy = "authority")
   private List<Menu> menu;
 }

@@ -1,10 +1,20 @@
 package com.projects.blog.controller;
 
-import com.projects.blog.dto.PostRequestDto;
+import com.projects.blog.common.CommonConstant;
+import com.projects.blog.dto.PostEditRequestDto;
+import com.projects.blog.dto.PostSaveRequestDto;
+import com.projects.blog.dto.ResponseDataDto;
 import com.projects.blog.service.PostService;
+import javax.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
 @RequiredArgsConstructor
@@ -13,9 +23,31 @@ public class PostController {
 
   private final PostService postService;
 
-  @PostMapping("/post")
-  public Long create(@RequestParam PostRequestDto postRequestDto) {
-    return postService.create(postRequestDto);
+  @PostMapping("/api/v1/post")
+  public ResponseEntity<ResponseDataDto> save(@RequestBody PostSaveRequestDto postSaveRequestDto,
+      HttpServletRequest request) {
+    Long userId = Long.valueOf(String.valueOf(request.getAttribute(CommonConstant.USER_ID)));
+    return ResponseEntity
+        .ok(new ResponseDataDto(HttpStatus.OK.value(),
+            postService.save(postSaveRequestDto, userId)));
   }
+
+  @GetMapping("/api/v1/posts/{id}")
+  public ResponseEntity<ResponseDataDto> find(@PathVariable Long id, HttpServletRequest request) {
+    Long userId = Long.valueOf(String.valueOf(request.getAttribute(CommonConstant.USER_ID)));
+    return ResponseEntity
+        .ok(new ResponseDataDto(HttpStatus.OK.value(), postService.find(id, userId)));
+  }
+
+  @PutMapping("/api/v1/post/{id}")
+  public Long edit(@PathVariable Long id, @RequestBody PostEditRequestDto postEditRequestDto) {
+    return postService.edit(id, postEditRequestDto);
+  }
+
+  @DeleteMapping("/api/v1/post/{id}")
+  public Long delete(@PathVariable Long id) {
+    return postService.delete(id);
+  }
+
 
 }
