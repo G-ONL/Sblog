@@ -1,7 +1,7 @@
 import Vue from "vue";
 import Vuex from "vuex";
 import axios from "axios";
-
+import router from '../router';
 Vue.use(Vuex);
 
 export default new Vuex.Store({
@@ -10,7 +10,7 @@ export default new Vuex.Store({
     isLoggedIn: false,
   },
   mutations: {
-    login: (state, {token}) => {
+    login: (state, { token }) => {
       state.token = token;
       state.isLoggedIn = true;
     },
@@ -20,18 +20,32 @@ export default new Vuex.Store({
     }
   },
   actions: {
-    login: (context, {email, password}) => {
-      console.log(email,password);
-      axios.post('https://reqres.in/api/login',{
-          email, password
+    login: (context, { userName, password }) => {
+      axios
+        .post('http://localhost:8080/user/login', { userName, password })
+        .then(res => {
+          if (res.status == 200) {
+            // header에서 authorization 가져오기
+            // 커밋하기
+            context.commit('login',{ token: res.headers.authorization });
+            router.push({name: 'Home'});
+          } 
         })
-        .then(res=>{
-          console.log(res);
+        .catch(error => {
+          console.log(error);
+          context.commit('loginFail');
+          alert("email, password 확인 해주세요!");
+        });
+    },
+    signin:(context, {userName, password}) => {
+      axios.post('http://localhost:8080/user/join',{
+        userName, password
+      })
+        .then(res => {
           if(res.status == 200){
-            context.commit('login',{token:101010});
+            // login으로 redirect 하기
           }
-        }
-          );
+        });
     }
   }
 });
