@@ -16,7 +16,6 @@ export default new Vuex.Store({
       state.isLoggedIn = true;
     },
     loginFail: (state) => {
-      state.token = '';
       state.isLoggedIn = false;
     },
     getPosts: (state, posts) => {
@@ -84,6 +83,11 @@ export default new Vuex.Store({
           context.commit('getPosts', posts);
         });
       
+    },
+    logout: (context) => {
+      context.commit('loginFail');
+      localStorage.setItem('token', '');
+      router.push({name:'Login'});
     }
   }
 });

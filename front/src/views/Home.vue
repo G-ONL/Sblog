@@ -10,7 +10,14 @@
                 <div class="header_column">
                     <i class="fas fa-search"></i>
                     <button class="new_post" v-on:click="()=>{this.$router.push({name:'CreatePost'})}">새 글 작성</button>
-                    <img/>
+                    <button class="me" v-on:click="toggleSetting">
+                        {{this.$store.state.userId}}
+                        <span>님</span>
+                        <div v-show="this.settingIsVisible == true" class="setting_window">
+                            <div>설정</div>
+                            <div v-on:click="logout">로그아웃</div>
+                        </div>
+                    </button>
                 </div>
             </div>
             <div v-if="this.$store.state.posts.length == 0">
@@ -49,6 +56,19 @@ export default {
   components:{
       Post
   },
+  data:function(){
+      return{
+          settingIsVisible: false
+      }
+  },
+  methods:{
+      toggleSetting(){
+          this.settingIsVisible = ! this.settingIsVisible;
+      },
+      logout(){
+          this.$store.dispatch('logout');
+      }
+  },
   name: "Home",
   created() {
       this.$store.dispatch('getPosts');
@@ -72,6 +92,42 @@ export default {
             align-items: left;
         }
 
+        .header_column * {
+            margin: 12px;
+        }
+
+        .header_column i {
+            font-size: 18px;
+        }
+
+        .header_column button {
+            border: 1px solid black;
+            padding: 6px 15px;
+            border-radius: 20px;
+            font-weight: 600;
+            background-color: white;
+        }
+        .header_column .me {
+            border: none;
+            padding: 10px 10px;
+            border-radius: 5px;
+            font-weight: 600;
+            background-color: transparent;
+            font-size: 16px;
+            width: 5vw;
+            height: 5vh;
+        }
+        .header_column .me:hover{
+            background-color: #d7e1f7;
+        }
+        .header_column .me .setting_window{
+            display: relative;
+            right: 10vw;    
+            width: 10vw;
+            height: 10vh;
+            z-index: 30;
+            background-color: gray;
+        }
         .center_big_column {
             width: 85%;
             height: 100%;
@@ -218,21 +274,7 @@ export default {
             font-size: 10px;
         }
 
-        .header_column * {
-            margin: 12px;
-        }
-
-        .header_column i {
-            font-size: 18px;
-        }
-
-        .header_column button {
-            border: 1px solid black;
-            padding: 6px 15px;
-            border-radius: 20px;
-            font-weight: 600;
-            background-color: white;
-        }
+        
 
         @media all and (max-width: 1400px) {
             .dashboard {

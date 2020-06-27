@@ -1,7 +1,7 @@
 <template>
     <div class="create_post_total">
-        <h1>수정하기</h1></br>
-        <textarea 
+        <h1>수정하기</h1><br>
+        <textarea
             class="title" 
             placeholder="제목을 입력하세요"
             v-model="title"></textarea>
