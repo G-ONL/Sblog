@@ -43,4 +43,12 @@ public class UserService {
     return new UserLoginResponseDto(user.getId());
   }
 
+  @Transactional
+  public String getUserName(Long userId){
+    return userRepository
+            .findById(userId)
+            .get()
+            .getUserName();
+  }
+
 }

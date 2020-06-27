@@ -15,6 +15,7 @@
                 </div>
                 <input class="input_row" v-model="password" type="password"/>
                 <button class="sign_in_button" v-on:click="login">Log in</button>
+                <router-link to="/signup">signup</router-link>
             </div>
             <div class="sign_up_box"></div>
         </div>

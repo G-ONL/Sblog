@@ -13,6 +13,9 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.List;
+import java.util.stream.Collectors;
+
 @RequiredArgsConstructor
 @Service
 public class PostService {
@@ -55,5 +58,15 @@ public class PostService {
     Post post = postRepository.findById(id).get();
     postRepository.delete(post);
     return id;
+  }
+
+  @Transactional
+  public List<PostResponseDto> findAll(){
+    List<Post> posts = postRepository.findAll();
+    List<PostResponseDto> postDtos = (List<PostResponseDto>) posts
+            .stream()
+            .map(post -> new PostResponseDto(post))
+            .collect(Collectors.toList());
+    return postDtos;
   }
 }
