@@ -28,7 +28,7 @@ export default {
     },
     methods: {
         onClick(){
-            this.$router.push(`/post/edit?id=${this.id}`);
+            this.$router.push(`/post/edit/${this.id}`);
         }
     },
 }

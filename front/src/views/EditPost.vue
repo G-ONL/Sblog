@@ -34,7 +34,7 @@ export default {
     },
     methods: {
         editPost(){
-          const postId = this.$route.query.id;
+          const postId = this.$route.params.id;
           const { title, content } = this;
           axios.put(`http://localhost:8080/api/v1/posts/edit/${postId}`,{
             title, content
@@ -54,7 +54,7 @@ export default {
         }
     },
     created() {
-        const postId = this.$route.query.id;
+        const postId = this.$route.params.id;
         console.log('postId:'+postId);
         axios.get(`http://localhost:8080/api/v1/posts/${postId}`,{
             headers:{

@@ -36,7 +36,7 @@ const routes = [
     component: CreatePost
   },
   {
-    path: "/post/edit",
+    path: "/post/edit/:id",
     name: "EditPost",
     beforeEnter: rejectNotAuthUser,
     component: EditPost
